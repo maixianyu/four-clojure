@@ -1,4 +1,5 @@
-(ns four-clojure.part1)
+(ns four-clojure.part1
+  (require [clojure.set :as set]))
 
 (defn foo
   "I don't do a whole lot."
@@ -153,6 +154,20 @@ chac-vec
 
 (gcd 4 2)
 
+; problem88
+(defn symmetric-difference [set-a set-b]
+  (loop [res #{}
+         seq-all (concat (seq set-a) (seq set-b))]
+    (if (empty? seq-all)
+      res
+      (recur (if (and (not= (get set-a (first seq-all)) nil)
+                      (not= (get set-b (first seq-all)) nil))
+               res
+               (conj res (first seq-all)))
+             (next seq-all)))))
+
+(symmetric-difference #{1 2 3 4} #{1 3 5 6})
+
 ; problem90
 (defn cartesian-product [set-a set-b]
   (loop [seq-a (seq set-a)
@@ -167,6 +182,25 @@ chac-vec
 
 (cartesian-product #{:a :b} #{:c :d})
 
+; problem100
+(defn least-common-multiple [a & more]
+  (loop [seq-tmp (conj (seq more) a)
+         res a]
+    (if (empty? seq-tmp)
+      res
+      (recur (next seq-tmp)
+             (/ (* res (first seq-tmp))
+                ((fn gcd [a b]
+                  (if (= b 0)
+                    a
+                    (gcd b (mod a b))))
+                  res
+                  (first seq-tmp)))))))
+
+
+(= (least-common-multiple 2/5 1/3) 2)
+
+(mod 1/2 1/4)
 
 ; problem107
 (defn simple-closures [n]
