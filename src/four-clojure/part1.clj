@@ -121,5 +121,34 @@ chac-vec
 6
 (when true 6)
 
+; problem51
+(= [1 2 [3 4 5] [1 2 3 4 5]] (let [[a b & c :as d] [1 2 3 4 5]] [a b c d]))
+
+
 ; problem52
 (= [2 4] (let [[a b c d e f g] (range)] [c e]))
+
+; problem83
+(defn a-half-true [a & other]
+  (if (and (not (reduce #(if (and (= true %1)
+                                  (= true %2))
+                           true
+                           false)
+                        (conj other a)))
+           (reduce #(if (or (= true %1)
+                            (= true %2))
+                      true
+                      false)
+                   (conj other a)))
+    true
+    false))
+
+(a-half-true false true)
+
+; problem66
+(defn gcd [a b]
+  (if (= b 0)
+    a
+    (gcd b (mod a b))))
+
+(gcd 4 2)
