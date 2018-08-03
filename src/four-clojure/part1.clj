@@ -152,3 +152,31 @@ chac-vec
     (gcd b (mod a b))))
 
 (gcd 4 2)
+
+; problem90
+(defn cartesian-product [set-a set-b]
+  (loop [seq-a (seq set-a)
+         seq-b (seq set-b)
+         res #{}]
+    (if (empty? seq-a)
+      res
+      (recur (next seq-a)
+             seq-b
+             (into res
+                   (map #(vector (first seq-a) %) seq-b))))))
+
+(cartesian-product #{:a :b} #{:c :d})
+
+
+; problem107
+(defn simple-closures [n]
+  (let [mi n]
+    (fn [x]
+      (loop [inner-n mi
+             res 1]
+        (if (= inner-n 0)
+          res
+          (recur (dec inner-n)
+                 (* res x)))))))
+
+((simple-closures 2) 16)
