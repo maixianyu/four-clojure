@@ -205,6 +205,41 @@ chac-vec
 ; problem52
 (= [2 4] (let [[a b c d e f g] (range)] [c e]))
 
+
+; problem66
+(defn gcd [a b]
+  (if (= b 0)
+    a
+    (gcd b (mod a b))))
+
+(gcd 4 2)
+
+; problem67
+(defn get-sqrt [n]
+  (loop [tmp-n 0]
+    (if (> (* tmp-n tmp-n) n)
+      (- tmp-n 1)
+      (recur (+ tmp-n 1)))))
+
+(defn prime? [n]
+  (let [sqrt-num (get-sqrt n)]
+    (loop [tmp-i 2]
+      (if (or (> tmp-i sqrt-num) (= tmp-i n))
+        true
+        (if (= 0 (mod n tmp-i))
+          false
+          (recur (+ tmp-i 1)))))))
+
+(defn prime-numbers [n]
+  (into []
+        (take n
+          (filter #(and (prime? %) (not= % 1)) (iterate #(+ % 1) 1)))))
+
+(prime-numbers 5)
+(= (last (prime-numbers 100))
+   541)
+
+
 ; problem83
 (defn a-half-true [a & other]
   (if (and (not (reduce #(if (and (= true %1)
@@ -221,14 +256,6 @@ chac-vec
     false))
 
 (a-half-true false true)
-
-; problem66
-(defn gcd [a b]
-  (if (= b 0)
-    a
-    (gcd b (mod a b))))
-
-(gcd 4 2)
 
 ; problem88
 (defn symmetric-difference [set-a set-b]
