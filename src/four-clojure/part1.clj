@@ -239,6 +239,27 @@ chac-vec
 (= (last (prime-numbers 100))
    541)
 
+; problem77
+(defn anagram-finder [in]
+  (loop [tmp-seq in
+         res-map {}]
+    (if (empty? tmp-seq)
+      (set (filter #(> (count %) 1) (vals res-map)))
+      (recur (next tmp-seq)
+             (assoc res-map
+               (set (seq (first tmp-seq)))
+               (if (= nil (get res-map (set (seq (first tmp-seq)))))
+                 (conj #{} (first tmp-seq))
+                 (conj (get res-map (set (seq (first tmp-seq)))) (first tmp-seq))))))))
+
+(anagram-finder ["abc" "cba" "fed"])
+
+(anagram-finder ["meat" "mat" "team" "mate" "eat"])
+(= (anagram-finder ["meat" "mat" "team" "mate" "eat"])
+   #{#{"meat" "team" "mate"}})
+
+(= (anagram-finder ["veer" "lake" "item" "kale" "mite" "ever"])
+   #{#{"veer" "ever"} #{"lake" "kale"} #{"mite" "item"}})
 
 ; problem83
 (defn a-half-true [a & other]
